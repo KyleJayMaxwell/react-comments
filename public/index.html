@@ -14,8 +14,65 @@
   <body>
     <div id="content"></div>
     <script type="text/babel">
-      // To get started with this tutorial running your own code, simply remove
-      // the script tag loading scripts/example.js and start writing code here.
+      var CommentBox = React.createClass({
+        render: function() {
+          return (
+            <div className="commentBox">
+              <h1>Comments</h1>
+              <CommentList data={this.props.data} />
+              <CommentForm />
+            </div>
+          );
+        }
+      });
+
+      var CommentList = React.createClass({
+        render: function () {
+          return (
+            <div className="commentList">
+              <Comment author="Peter Pan">This is just one comment</Comment>
+              <Comment author="Peter Parker">This is a comment from Spidey</Comment>
+            </div>
+          );
+        }
+      });
+
+      var CommentForm = React.createClass({
+        render: function () {
+          return (
+            <div className="commentForm">
+              Hello I am a comment form
+            </div>
+          );
+        }
+      });
+
+      var Comment = React.createClass({
+        rawMarkup: function() {
+          var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
+            return {__html: rawMarkup};
+          },
+        render: function() {
+          return(
+            <div className="comment">
+              <h2 className="commentAuthor">
+                {this.props.author}
+              </h2>
+              <span dangerouslySetInnerHTML={this.rawMarkup()} />
+            </div>
+          );
+        }
+      });
+
+      var data = [
+        {id: 1, author: "Peter Pan", text: "One comment"},
+        {id: 1, author: "Peter Parker", text: "Spidey comment"},        
+      ]
+
+      ReactDOM.render(
+        <CommentBox data={data} />,
+        document.getElementById('content')
+      );
     </script>
   </body>
 </html>
